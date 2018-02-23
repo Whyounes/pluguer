@@ -25,6 +25,8 @@ abstract class Plugin
     protected $version;
 
     /**
+     * The boot method is called on application boot
+     *
      * Boot the plugin
      * @return void
      */

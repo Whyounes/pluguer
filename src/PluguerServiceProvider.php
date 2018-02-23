@@ -40,7 +40,7 @@ class PluguerServiceProvider extends ServiceProvider
             return;
         }
 
-
+        require_once config("plugins.backend_routes_path");
     }
 
     public function register()

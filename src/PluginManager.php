@@ -70,6 +70,19 @@ class PluginManager
      */
     public function activate($plugin): bool
     {
+        return $this->updatePluginStatus($plugin, true);
+    }
+
+    /**
+     * @param $plugin
+     * @param bool $status
+     * @return bool
+     * @throws PluginNotFoundException
+     * @throws TypeError
+     */
+    private function updatePluginStatus($plugin, bool $status): bool
+    {
+        /** @var PluginModel $plugin */
         if (!is_string($plugin) && !$plugin instanceof PluginModel) {
             throw new TypeError("Method only accepts a plugin `id` or a `" . PluginModel::class . "` instance.");
         }
@@ -82,9 +95,20 @@ class PluginManager
             throw new PluginNotFoundException;
         }
 
-        // TODO: Go to DB and activate plugin, then reload plugin manager collection
+        $plugin->is_active = $status;
 
-        return true;
+        return $plugin->save();
+    }
+
+    /**
+     * @param $plugin
+     * @return bool
+     * @throws PluginNotFoundException
+     * @throws TypeError
+     */
+    public function deactivate($plugin): bool
+    {
+        return $this->updatePluginStatus($plugin, false);
     }
 
     /**
